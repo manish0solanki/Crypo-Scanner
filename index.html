@@ -2,167 +2,226 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CryptoSignal Tracker — Auto 1:2 RR Trade Finder</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CryptoSignal Tracker — TEST MODE</title>
 <style>
 :root{
   --bg:#0b0e14; --card:#131722; --card2:#1a2130; --border:#232b3d;
   --text:#e8ecf4; --muted:#8b94a7; --green:#16c784; --red:#ea3943;
   --yellow:#f0b90b; --blue:#4f8cff; --purple:#9b6bff;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Segoe UI,system-ui,sans-serif;min-height:100vh}
 header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:var(--card);position:sticky;top:0;z-index:50}
-h1{font-size:20px;font-weight:700}
-h1 span{color:var(--yellow)}
+h1{font-size:20px} h1 span{color:var(--yellow)}
 .sub{color:var(--muted);font-size:12px;margin-top:2px}
-.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-select,button,input{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;cursor:pointer}
-button:hover{border-color:var(--blue)}
+.controls{display:flex;gap:8px;flex-wrap:wrap}
+select,button,input{background:var(--card2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px}
+button{cursor:pointer} button:hover{border-color:var(--blue)}
 button.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
 button:disabled{opacity:.5;cursor:not-allowed}
-.stats{display:flex;gap:14px;padding:14px 20px;flex-wrap:wrap}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;min-width:120px}
-.stat .v{font-size:22px;font-weight:700}
-.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;padding:0 20px 20px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;transition:.2s}
-.card:hover{border-color:var(--blue)}
-.card .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
-.coin{display:flex;gap:10px;align-items:center}
-.coin .sym{font-weight:700;font-size:16px}
-.coin .name{font-size:11px;color:var(--muted)}
-.price{font-size:20px;font-weight:700;text-align:right}
-.chg{font-size:12px;text-align:right}
-.up{color:var(--green)} .down{color:var(--red)}
-.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.badge.long{background:rgba(22,199,132,.15);color:var(--green);border:1px solid rgba(22,199,132,.4)}
-.badge.short{background:rgba(234,57,67,.15);color:var(--red);border:1px solid rgba(234,57,67,.4)}
-.badge.wait{background:rgba(240,185,11,.12);color:var(--yellow);border:1px solid rgba(240,185,11,.35)}
-.badge.ai{background:rgba(155,107,255,.15);color:var(--purple);border:1px solid rgba(155,107,255,.4)}
-.levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
-.lvl{background:var(--card2);border-radius:8px;padding:8px 10px}
-.lvl .k{font-size:10px;color:var(--muted);text-transform:uppercase}
-.lvl .val{font-size:14px;font-weight:600;font-family:monospace}
-.lvl.entry .val{color:var(--blue)} .lvl.sl .val{color:var(--red)} .lvl.tp .val{color:var(--green)} .lvl.rr .val{color:var(--yellow)}
-.riskbar{height:6px;background:var(--card2);border-radius:3px;margin-top:10px;overflow:hidden}
-.riskbar i{display:block;height:100%;border-radius:3px}
-.reason{margin-top:10px;font-size:11px;color:var(--muted);line-height:1.5}
-.ai-box{margin-top:10px;background:rgba(155,107,255,.06);border:1px solid rgba(155,107,255,.25);border-radius:8px;padding:10px;font-size:12px;line-height:1.55;display:none}
-.ai-box.show{display:block}
-.ai-box b{color:var(--purple)}
-.card .actions{margin-top:12px;display:flex;gap:8px}
-.card .actions button{flex:1;font-size:12px;padding:7px}
-.tabs{display:flex;gap:6px;padding:0 20px 12px}
-.tab{padding:8px 16px;border-radius:8px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px}
-.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
-.journal-list{padding:0 20px 30px;display:flex;flex-direction:column;gap:10px}
-.jrow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.jrow .jsym{font-weight:700;min-width:70px}
-.jrow .jdetail{font-size:12px;color:var(--muted);flex:1}
-.jrow .jpnl{font-weight:700;font-family:monospace}
-.empty{color:var(--muted);text-align:center;padding:40px;font-size:14px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100}
-.modal.show{display:flex}
-.modal .box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;width:min(440px,92vw)}
-.modal h3{margin-bottom:14px}
-.modal label{font-size:12px;color:var(--muted);display:block;margin:10px 0 4px}
-.modal input,.modal select{width:100%}
-.modal .row{display:flex;gap:10px}
-.modal .row>div{flex:1}
-footer{padding:16px 20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);text-align:center}
-.toast{position:fixed;bottom:20px;right:20px;background:var(--card2);border:1px solid var(--green);color:var(--green);padding:12px 18px;border-radius:10px;font-size:13px;display:none;z-index:200}
+button.danger{background:rgba(234,57,67,.15);border-color:var(--red);color:var(--red)}
+button.small{padding:4px 10px;font-size:11px}
 .statusbar{display:flex;gap:16px;align-items:center;padding:10px 20px;background:var(--card2);border-bottom:1px solid var(--border);font-size:12px;flex-wrap:wrap}
+.mono{font-family:monospace;color:var(--muted)}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:5px}
 .dot.on{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 1.5s infinite}
 .dot.off{background:var(--red)}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.mono{font-family:monospace;color:var(--muted)}
+@keyframes pulse{50%{opacity:.4}}
+.stats{display:flex;gap:14px;padding:14px 20px;flex-wrap:wrap}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;min-width:130px}
+.stat .v{font-size:22px;font-weight:700}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.tabs{display:flex;gap:6px;padding:0 20px 12px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:8px;background:var(--card);border:1px solid var(--border);cursor:pointer;font-size:13px}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px;padding:0 20px 20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.sym{font-weight:700;font-size:16px}
+.name{font-size:11px;color:var(--muted)}
+.price{font-size:20px;font-weight:700;text-align:right}
+.chg{font-size:12px;text-align:right;color:var(--muted)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.long{background:rgba(22,199,132,.15);color:var(--green);border:1px solid rgba(22,199,132,.4)}
+.short{background:rgba(234,57,67,.15);color:var(--red);border:1px solid rgba(234,57,67,.4)}
+.wait{background:rgba(240,185,11,.12);color:var(--yellow);border:1px solid rgba(240,185,11,.35)}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.lvl{background:var(--card2);border-radius:8px;padding:8px 10px}
+.k{font-size:10px;color:var(--muted);text-transform:uppercase}
+.val{font-size:14px;font-weight:600;font-family:monospace}
+.entry .val{color:var(--blue)} .sl .val{color:var(--red)} .tp .val{color:var(--green)} .rr .val{color:var(--yellow)}
+.riskbar{height:6px;background:var(--card2);border-radius:3px;margin-top:10px;overflow:hidden}
+.riskbar i{display:block;height:100%;border-radius:3px}
+.reason{margin-top:10px;font-size:11px;color:var(--muted);line-height:1.55}
+.actions{margin-top:12px;display:flex;gap:8px}
+.actions button{flex:1;font-size:12px}
+.ai-box{display:none;margin-top:10px;padding:10px;border:1px solid rgba(155,107,255,.25);border-radius:8px;background:rgba(155,107,255,.06);font-size:12px;line-height:1.5}
+.journal-list{padding:0 20px 30px;display:flex;flex-direction:column;gap:10px}
+.jrow{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.jdetail{font-size:12px;color:var(--muted);flex:1}
+.jpnl{font-weight:700;font-family:monospace}
+.up{color:var(--green)} .down{color:var(--red)}
+.empty{text-align:center;color:var(--muted);padding:40px;font-size:14px}
+.settings{padding:0 20px 30px}
+.settings .card{max-width:600px}
+.settings input{width:100%;margin-top:6px}
+.settings-info{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100}
+.modal.show{display:flex}
+.box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;width:min(480px,92vw)}
+.box h3{margin-bottom:14px}
+.box label{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px}
+.box input,.box select{width:100%}
+.row{display:flex;gap:10px}
+.row>div{flex:1}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--card2);border:1px solid var(--green);color:var(--green);padding:12px 18px;border-radius:10px;font-size:13px;display:none;z-index:200}
+.heat-warn{color:var(--red);font-weight:700}
+.heat-ok{color:var(--green)}
+/* LIVE PNL */
+.live-pnl{font-size:18px;font-weight:700;font-family:monospace;min-width:90px;text-align:right}
+.pnl-label{font-size:10px;color:var(--muted);text-transform:uppercase}
+.progress{height:4px;background:var(--card2);border-radius:2px;margin-top:6px;overflow:hidden;flex-basis:100%}
+.progress i{display:block;height:100%;border-radius:2px;transition:width .5s}
+.jrow .jbtns{display:flex;gap:6px}
+.tp-hit{color:var(--green)}
+.sl-hit{color:var(--red)}
+.running{color:var(--yellow)}
 </style>
 <base target="_blank">
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>⚡ CryptoSignal <span>Tracker</span></h1>
-    <div class="sub">Auto-scanning · Binance live data · 1:2 RR minimum · Execute on CoinSwitch</div>
-  </div>
-  <div class="controls">
-    <select id="tfSelect">
-      <option value="15m">15m</option>
-      <option value="1h" selected>1H</option>
-      <option value="4h">4H</option>
-    </select>
-    <select id="quoteSelect">
-      <option value="USDT" selected>USDT pairs</option>
-      <option value="BTC">BTC pairs</option>
-    </select>
-    <button id="autoBtn" class="primary">⏸ Auto: ON</button>
-    <button id="scanBtn">🔍 Scan Now</button>
-    <button id="notifyBtn">🔔 Enable Alerts</button>
-    <button id="jrnlBtn">📓 Journal</button>
-  </div>
+<div>
+  <h1>⚡ CryptoSignal <span>Tracker</span></h1>
+  <div class="sub">Binance public data · CLOSED candles · Test/Paper mode · Minimum 1:2 RR</div>
+</div>
+<div class="controls">
+  <select id="tfSelect">
+    <option value="15m">15m</option>
+    <option value="1h" selected>1H</option>
+    <option value="4h">4H</option>
+  </select>
+  <select id="quoteSelect">
+    <option value="USDT" selected>USDT pairs</option>
+    <option value="BTC">BTC pairs</option>
+  </select>
+  <button id="autoBtn" class="primary">⏸ Auto: ON</button>
+  <button id="scanBtn">🔍 Scan Now</button>
+  <button id="notifyBtn">🔔 Alerts</button>
+  <button id="jrnlBtn">📓 Journal</button>
+</div>
 </header>
 
 <div class="statusbar">
-  <span><span class="dot on" id="connDot"></span><span id="connTxt">Connected</span></span>
-  <span>⏱ Next auto-scan: <b class="mono" id="nextScan">—</b></span>
-  <span>📡 Scans run: <b class="mono" id="scanCount">0</b></span>
-  <span>🔔 Alerts: <b class="mono" id="alertStatus">Off</b></span>
+  <span><span class="dot on" id="connDot"></span><span id="connTxt">Starting...</span></span>
+  <span>⏱ Next: <b class="mono" id="nextScan">—</b></span>
+  <span>📡 Scans: <b class="mono" id="scanCount">0</b></span>
+  <span>🔔 <b class="mono" id="alertStatus">Off</b></span>
+  <span id="heatStat"></span>
   <span id="lastSignal" style="margin-left:auto"></span>
 </div>
 
 <div class="stats" id="statsBar"></div>
+
 <div class="tabs">
   <div class="tab active" data-tab="signals">📶 Signals</div>
-  <div class="tab" data-tab="journal">📓 Trade Journal</div>
+  <div class="tab" data-tab="journal">📓 Paper Journal</div>
   <div class="tab" data-tab="settings">⚙️ Settings</div>
 </div>
 
 <div class="grid" id="signalsGrid"></div>
 <div class="journal-list" id="journalList" style="display:none"></div>
 
-<div id="settingsPane" style="display:none;padding:0 20px 30px">
-  <div class="card" style="max-width:560px">
-    <h3 style="margin-bottom:10px">⚙️ Settings</h3>
-    <label style="font-size:12px;color:var(--muted)">Moonshot API Key (optional — enables AI analysis)</label>
-    <input type="password" id="moonKey" placeholder="sk-..." style="width:100%;margin-top:6px">
-    <label style="font-size:12px;color:var(--muted);margin-top:12px">Auto-scan interval (seconds)</label>
-    <input type="number" id="scanInterval" value="60" min="30" max="600" style="width:100%;margin-top:6px">
-    <div style="margin-top:10px;font-size:12px;color:var(--muted);line-height:1.6">
-      🔑 Free Moonshot key: <b style="color:var(--blue)">platform.moonshot.ai</b><br>
-      📊 Data: Binance public API (no key needed).<br>
-      🔔 Browser notifications work even when tab is in background (keep tab open).<br>
-      ⚠️ Signals are educational. Not financial advice.
-    </div>
-    <button class="primary" style="margin-top:14px" onclick="saveSettings()">Save</button>
-    <div id="saveMsg" style="font-size:12px;color:var(--green);margin-top:8px;display:none">✓ Saved</div>
+<div class="settings" id="settingsPane" style="display:none">
+<div class="card">
+  <h3>⚙️ Settings</h3>
+  <label>Moonshot API key (optional)</label>
+  <input id="moonKey" type="password" placeholder="sk-...">
+  <label>Auto-scan interval (seconds)</label>
+  <input id="scanInterval" type="number" min="30" max="600" value="60">
+  <div class="settings-info">
+    📊 Binance public API only.<br>
+    🚫 No CoinSwitch API.<br>
+    🚫 No automatic order execution.<br>
+    🧪 All trades are paper trades.<br>
+    🔔 Notifications require this page to remain open.<br>
+    ⚠️ Score is a setup score, not a win probability.<br>
+    🎯 Minimum score: 65 · Winner must lead by 10+<br>
+    📏 EMA20 distance: ATR-based (adapts to each coin)<br>
+    ⏳ Alert cooldown: 5 min per symbol+direction
   </div>
+  <button class="primary" style="margin-top:14px" onclick="saveSettings()">Save</button>
+  <div id="saveMsg" style="font-size:12px;color:var(--green);margin-top:8px;display:none">✓ Saved</div>
+</div>
 </div>
 
+<!-- PAPER TRADE MODAL -->
 <div class="modal" id="tradeModal">
-  <div class="box">
-    <h3 id="tmTitle">Log Trade</h3>
-    <div class="row">
-      <div><label>Direction</label><input id="tmDir" readonly></div>
-      <div><label>Entry</label><input id="tmEntry" readonly></div>
-    </div>
-    <div class="row">
-      <div><label>Stop Loss</label><input id="tmSL" readonly></div>
-      <div><label>Take Profit</label><input id="tmTP" readonly></div>
-    </div>
-    <div class="row">
-      <div><label>Amount (₹)</label><input id="tmAmt" type="number" placeholder="e.g. 1000"></div>
-      <div><label>Leverage</label>
-        <select id="tmLev"><option>1</option><option>2</option><option>3</option><option>5</option></select>
-      </div>
-    </div>
-    <div style="display:flex;gap:10px;margin-top:18px">
-      <button class="primary" style="flex:1" onclick="saveTrade()">💾 Save to Journal</button>
-      <button style="flex:1" onclick="closeModal()">Cancel</button>
+<div class="box">
+  <h3 id="tmTitle">Paper Trade</h3>
+  <div class="row">
+    <div><label>Direction</label><input id="tmDir" readonly></div>
+    <div><label>Entry (approx)</label><input id="tmEntry" readonly></div>
+  </div>
+  <div class="row">
+    <div><label>Stop Loss</label><input id="tmSL" readonly></div>
+    <div><label>Take Profit</label><input id="tmTP" readonly></div>
+  </div>
+  <div class="row">
+    <div><label>Amount (₹)</label><input id="tmAmt" type="number" min="0" placeholder="1000"></div>
+    <div><label>Leverage</label>
+      <select id="tmLev"><option>1</option><option>2</option><option>3</option><option>5</option></select>
     </div>
   </div>
+  <div style="display:flex;gap:10px;margin-top:18px">
+    <button class="primary" style="flex:1" onclick="saveTrade()">💾 Save Paper Trade</button>
+    <button style="flex:1" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- EDIT TRADE MODAL -->
+<div class="modal" id="editModal">
+<div class="box">
+  <h3 id="emTitle">Edit Trade</h3>
+  <div class="row">
+    <div><label>Symbol</label><input id="emSym"></div>
+    <div><label>Direction</label>
+      <select id="emDir"><option>LONG</option><option>SHORT</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div><label>Entry Price</label><input id="emEntry" type="number" step="any"></div>
+    <div><label>Current Price</label><input id="emPrice" type="number" step="any"></div>
+  </div>
+  <div class="row">
+    <div><label>Stop Loss</label><input id="emSL" type="number" step="any"></div>
+    <div><label>Take Profit</label><input id="emTP" type="number" step="any"></div>
+  </div>
+  <div class="row">
+    <div><label>Amount (₹)</label><input id="emAmt" type="number"></div>
+    <div><label>Leverage</label>
+      <select id="emLev"><option>1</option><option>2</option><option>3</option><option>5</option></select>
+    </div>
+  </div>
+  <div class="row">
+    <div><label>Status</label>
+      <select id="emStatus">
+        <option value="running">Running</option>
+        <option value="tp">TP Hit</option>
+        <option value="sl">SL Hit</option>
+        <option value="manual">Manual Close</option>
+      </select>
+    </div>
+    <div><label>Close Price (if closed)</label><input id="emClose" type="number" step="any" placeholder="optional"></div>
+  </div>
+  <div style="display:flex;gap:10px;margin-top:18px">
+    <button class="primary" style="flex:1" onclick="saveEdit()">💾 Save Changes</button>
+    <button style="flex:1" onclick="closeEdit()">Cancel</button>
+  </div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -170,8 +229,16 @@ footer{padding:16px 20px;color:var(--muted);font-size:11px;border-top:1px solid 
 <script>
 /* ================= CONFIG ================= */
 const COINS = ["BTC","ETH","SOL","BNB","XRP","ADA","DOGE","AVAX","LINK","MATIC","DOT","LTC","TRX","ATOM","UNI","NEAR","APT","ARB","OP","INJ","SUI","SEI","TIA","JUP","PYTH"];
-const state = { signals:[], journal:[], tf:"1h", quote:"USDT", scanTime:null, auto:true, scans:0, lastSigKey:"" };
-let autoTimer=null, countdownTimer=null, nextScanAt=null;
+const MIN_SCORE = 65;
+const MIN_SPREAD = 10;
+const MIN_VOLUME = 1.2;
+const ALERT_COOLDOWN = 5 * 60 * 1000;
+const MAX_HEAT = 3;
+const LIVE_UPDATE_MS = 15000; // 15s live P&L refresh
+
+const state = { signals:[], journal:[], tf:"1h", quote:"USDT", scanTime:null, auto:true, scans:0, livePrices:{} };
+const recentAlerts = {};
+let autoTimer=null, countdownTimer=null, nextScanAt=null, curIdx=null, editIdx=null, liveTimer=null;
 const $ = id => document.getElementById(id);
 
 /* ================= STORAGE ================= */
@@ -181,310 +248,558 @@ function load(){
     $("moonKey").value = localStorage.getItem("cs_moon")||"";
     const iv = localStorage.getItem("cs_interval");
     if(iv) $("scanInterval").value = iv;
-  }catch(e){}
+  }catch(e){console.error(e);}
 }
 function save(){ localStorage.setItem("cs_journal", JSON.stringify(state.journal)); }
 function saveSettings(){
   localStorage.setItem("cs_moon",$("moonKey").value);
   localStorage.setItem("cs_interval",$("scanInterval").value);
-  $("saveMsg").style.display="block"; setTimeout(()=>$("saveMsg").style.display="none",1500);
-  if(state.auto){ scheduleNext(); }
+  $("saveMsg").style.display="block";
+  setTimeout(()=>{$("saveMsg").style.display="none";},1500);
+  if(state.auto) scheduleNext();
 }
 
 /* ================= ALERTS ================= */
 function beep(){
   try{
     const ctx = new (window.AudioContext||window.webkitAudioContext)();
-    const o = ctx.createOscillator(), g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.frequency.value = 880; g.gain.value = 0.15;
-    o.start(); setTimeout(()=>{o.frequency.value=1174;},150);
-    setTimeout(()=>{o.stop();ctx.close();},350);
+    const osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value=880; gain.gain.value=0.12;
+    osc.start();
+    setTimeout(()=>{osc.frequency.value=1174;},140);
+    setTimeout(()=>{osc.stop();ctx.close();},320);
   }catch(e){}
 }
-function notify(title, body){
-  if(!("Notification" in window)) return;
-  if(Notification.permission === "granted"){
-    new Notification(title, {body, icon:"⚡"});
+function notify(title,body){
+  if("Notification" in window && Notification.permission==="granted"){
+    new Notification(title,{body:body});
   }
 }
-$("notifyBtn").onclick = async ()=>{
-  if(!("Notification" in window)){ toast("⚠️ Browser doesn't support notifications"); return; }
+$("notifyBtn").onclick = async()=>{
+  if(!("Notification" in window)){ toast("⚠️ Notifications unavailable"); return; }
   const p = await Notification.requestPermission();
   if(p==="granted"){
-    $("alertStatus").textContent = "On";
-    $("notifyBtn").textContent = "🔔 Alerts On";
-    toast("✓ Notifications enabled — you'll be alerted on new signals");
-    notify("CryptoSignal Tracker", "Alerts active. Keep this tab open in background.");
-  } else {
+    $("alertStatus").textContent="On";
+    $("notifyBtn").textContent="🔔 Alerts On";
+    toast("✓ Alerts enabled");
+  }else{
     toast("⚠️ Notification permission denied");
   }
 };
 
-/* ================= DATA FETCH ================= */
-async function fetchKlines(sym, tf){
-  const url = `https://api.binance.com/api/v3/klines?symbol=${sym}&interval=${tf}&limit=120`;
-  const r = await fetch(url);
-  if(!r.ok) throw new Error("fetch fail");
-  const raw = await r.json();
-  return raw.map(k=>({t:k[0],o:+k[1],h:+k[2],l:+k[3],c:+k[4],v:+k[5]}));
+/* ================= BINANCE DATA ================= */
+async function fetchKlines(symbol,tf){
+  const url=`https://api.binance.com/api/v3/klines?symbol=${symbol}&interval=${tf}&limit=160`;
+  const r=await fetch(url);
+  if(!r.ok) throw new Error("Binance HTTP "+r.status);
+  const raw=await r.json();
+  if(!Array.isArray(raw)||raw.length<120) throw new Error("Not enough candles");
+  raw.pop();
+  return raw.map(k=>({t:+k[0],o:+k[1],h:+k[2],l:+k[3],c:+k[4],v:+k[5]}));
 }
-async function fetchTicker(sym){
-  const r = await fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}`);
-  const d = await r.json();
-  return { price:+d.lastPrice, chg:+d.priceChangePercent };
+
+async function fetchPrice(symbol){
+  try{
+    const r=await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${symbol}`);
+    const d=await r.json();
+    return Number(d.price);
+  }catch(e){return null;}
 }
 
 /* ================= INDICATORS ================= */
-function ema(data,p){ const k=2/(p+1); let e=data[0]; const out=[e]; for(let i=1;i<data.length;i++){ e=data[i]*k+e*(1-k); out.push(e);} return out; }
-function rsi(closes,p=14){
-  let g=0,l=0; const out=[50];
-  for(let i=1;i<closes.length;i++){
-    const d=closes[i]-closes[i-1];
-    g=(g*(p-1)+Math.max(d,0))/p; l=(l*(p-1)+Math.max(-d,0))/p;
-    out.push(l===0?100:100-100/(1+g/l));
-  } return out;
+function ema(data,period){
+  if(!data.length) return [];
+  const m=2/(period+1); let v=data[0]; const r=[v];
+  for(let i=1;i<data.length;i++){ v=data[i]*m+v*(1-m); r.push(v); }
+  return r;
 }
-function atr(candles,p=14){
-  const trs=[]; for(let i=1;i<candles.length;i++){ const c=candles[i],pc=candles[i-1].c;
-    trs.push(Math.max(c.h-c.l, Math.abs(c.h-pc), Math.abs(c.l-pc))); }
-  let a=trs[0]; const out=[a];
-  for(let i=1;i<trs.length;i++){ a=(a*(p-1)+trs[i])/p; out.push(a);} return out;
+function rsi(data,period=14){
+  const result=new Array(data.length).fill(null);
+  if(data.length<=period) return result;
+  let g=0,l=0;
+  for(let i=1;i<=period;i++){const d=data[i]-data[i-1];g+=Math.max(d,0);l+=Math.max(-d,0);}
+  let ag=g/period, al=l/period;
+  result[period]=al===0?100:100-100/(1+ag/al);
+  for(let i=period+1;i<data.length;i++){
+    const d=data[i]-data[i-1];
+    ag=(ag*(period-1)+Math.max(d,0))/period;
+    al=(al*(period-1)+Math.max(-d,0))/period;
+    result[i]=al===0?100:100-100/(1+ag/al);
+  }
+  return result;
 }
-function macd(closes){
-  const ef=ema(closes,12), es=ema(closes,26);
-  const line=closes.map((_,i)=>ef[i]-es[i]);
+function atr(candles,period=14){
+  const tr=[];
+  for(let i=0;i<candles.length;i++){
+    if(i===0){tr.push(candles[i].h-candles[i].l);continue;}
+    const c=candles[i],p=candles[i-1];
+    tr.push(Math.max(c.h-c.l,Math.abs(c.h-p.c),Math.abs(c.l-p.c)));
+  }
+  if(tr.length<period) return new Array(tr.length).fill(null);
+  const result=new Array(tr.length).fill(null);
+  let a=0;
+  for(let i=0;i<period;i++)a+=tr[i];
+  a/=period; result[period-1]=a;
+  for(let i=period;i<tr.length;i++){a=(a*(period-1)+tr[i])/period;result[i]=a;}
+  return result;
+}
+function macd(data){
+  const f=ema(data,12),s=ema(data,26);
+  const line=data.map((_,i)=>f[i]-s[i]);
   const sig=ema(line,9);
-  return {line, sig, hist:line.map((v,i)=>v-sig[i])};
+  return {line,sig,hist:line.map((v,i)=>v-sig[i])};
+}
+function volumeRatio(candles,index,lookback=20){
+  if(index<lookback)return 1;
+  let t=0;
+  for(let i=index-lookback;i<index;i++)t+=candles[i].v;
+  const avg=t/lookback;
+  return avg>0?candles[index].v/avg:1;
 }
 
-/* ================= SIGNAL ENGINE ================= */
-function analyze(candles, sym, ticker){
-  const closes=candles.map(c=>c.c), highs=candles.map(c=>c.h), lows=candles.map(c=>c.l);
-  const e20=ema(closes,20), e50=ema(closes,50), r=rsi(closes), a=atr(candles), m=macd(closes);
+/* ================= SIGNAL ANALYSIS ================= */
+function analyze(candles,symbol,ticker){
+  const closes=candles.map(c=>c.c),highs=candles.map(c=>c.h),lows=candles.map(c=>c.l);
+  const e20=ema(closes,20),e50=ema(closes,50),e100=ema(closes,100);
+  const rsiV=rsi(closes),atrV=atr(candles),macdV=macd(closes);
   const i=closes.length-1;
-  const price=closes[i], atrV=a[i], rsiV=r[i];
-  const trendUp = e20[i]>e50[i], trendDn = e20[i]<e50[i];
-  const momUp = m.hist[i]>0 && m.hist[i]>m.hist[i-1];
-  const momDn = m.hist[i]<0 && m.hist[i]<m.hist[i-1];
-  const near20 = Math.abs(price-e20[i])/price < 0.004;
-
-  let dir=null, entry=price, sl, tp, conf=0, reasons=[];
-  if(trendUp && near20 && momUp && rsiV<70){
-    dir="LONG";
-    if(rsiV>45&&rsiV<65) conf+=30; else conf+=15;
-    if(m.hist[i]>m.hist[i-1]) conf+=25;
-    if(price>e20[i]) conf+=20; else conf+=10;
-    if(ticker.chg>-3) conf+=15;
-    sl = Math.min(lows[i], lows[i-1]) - atrV*0.3;
-    if(price-sl <= 0) sl = price - atrV*1.2;
-    const risk = price - sl;
-    tp = price + risk*2;
-    reasons.push("Uptrend (EMA20>EMA50)","Pullback to EMA20","MACD momentum rising",`RSI ${rsiV.toFixed(0)}`);
+  const price=closes[i],atrVal=atrV[i],rsiVal=rsiV[i];
+  if(!Number.isFinite(price)||!Number.isFinite(atrVal))return null;
+  const cur=candles[i],prev=candles[i-1];
+  const volRatio=volumeRatio(candles,i);
+  const trendUp=e20[i]>e50[i],trendDn=e20[i]<e50[i];
+  const strongUp=e20[i]>e50[i]&&e50[i]>e100[i];
+  const strongDn=e20[i]<e50[i]&&e50[i]<e100[i];
+  const emaDist=Math.abs(price-e20[i]);
+  const nearEMA20=emaDist<=atrVal*0.5;
+  const hist=macdV.hist[i],prevHist=macdV.hist[i-1];
+  const momUp=hist>prevHist,momDn=hist<prevHist;
+  const bull=cur.c>cur.o,bear=cur.c<cur.o;
+  let longScore=0,shortScore=0;
+  const longReasons=[],shortReasons=[];
+  if(strongUp){longScore+=25;longReasons.push("EMA20>50>100");}
+  else if(trendUp){longScore+=15;longReasons.push("EMA20>EMA50");}
+  if(nearEMA20){longScore+=15;longReasons.push("Near EMA20");}
+  if(price>e20[i])longScore+=5;
+  if(hist>0){longScore+=10;longReasons.push("MACD+");}
+  if(momUp){longScore+=10;longReasons.push("Mom↑");}
+  if(rsiVal>=45&&rsiVal<=68){longScore+=15;longReasons.push("RSI "+rsiVal.toFixed(0));}
+  if(bull){longScore+=10;longReasons.push("Bull candle");}
+  if(volRatio>=1){longScore+=5;longReasons.push("Vol "+volRatio.toFixed(1)+"x");}
+  if(ticker.chg>-5)longScore+=5;
+  if(strongDn){shortScore+=25;shortReasons.push("EMA20<50<100");}
+  else if(trendDn){shortScore+=15;shortReasons.push("EMA20<EMA50");}
+  if(nearEMA20){shortScore+=15;shortReasons.push("Near EMA20");}
+  if(price<e20[i])shortScore+=5;
+  if(hist<0){shortScore+=10;shortReasons.push("MACD-");}
+  if(momDn){shortScore+=10;shortReasons.push("Mom↓");}
+  if(rsiVal>=32&&rsiVal<=55){shortScore+=15;shortReasons.push("RSI "+rsiVal.toFixed(0));}
+  if(bear){shortScore+=10;shortReasons.push("Bear candle");}
+  if(volRatio>=1){shortScore+=5;shortReasons.push("Vol "+volRatio.toFixed(1)+"x");}
+  if(ticker.chg<5)shortScore+=5;
+  let dir=null,score=0,reasons=[];
+  if(longScore>=MIN_SCORE&&longScore>=shortScore+MIN_SPREAD){dir="LONG";score=longScore;reasons=longReasons;}
+  else if(shortScore>=MIN_SCORE&&shortScore>=longScore+MIN_SPREAD){dir="SHORT";score=shortScore;reasons=shortReasons;}
+  if(!dir){
+    return {sym:symbol,name:symbol,price:price,chg:ticker.chg,dir:null,
+      score:Math.max(longScore,shortScore),rsi:rsiVal,atr:atrVal,
+      volumeRatio:volRatio,candles:candles};
   }
-  else if(trendDn && near20 && momDn && rsiV>30){
-    dir="SHORT";
-    if(rsiV<55&&rsiV>35) conf+=30; else conf+=15;
-    if(m.hist[i]<m.hist[i-1]) conf+=25;
-    if(price<e20[i]) conf+=20; else conf+=10;
-    if(ticker.chg<3) conf+=15;
-    sl = Math.max(highs[i], highs[i-1]) + atrV*0.3;
-    if(sl-price <= 0) sl = price + atrV*1.2;
-    const risk = sl - price;
-    tp = price - risk*2;
-    reasons.push("Downtrend (EMA20<EMA50)","Pullback to EMA20","MACD momentum falling",`RSI ${rsiV.toFixed(0)}`);
+  let entry=price,sl,tp,risk;
+  if(dir==="LONG"){
+    sl=Math.min(lows[i],lows[i-1])-atrVal*0.25;
+    if(sl>=entry)sl=entry-atrVal*1.2;
+    risk=entry-sl; tp=entry+risk*2;
+  }else{
+    sl=Math.max(highs[i],highs[i-1])+atrVal*0.25;
+    if(sl<=entry)sl=entry+atrVal*1.2;
+    risk=sl-entry; tp=entry-risk*2;
   }
-  const rr = dir ? Math.abs(tp-entry)/Math.abs(entry-sl) : 0;
-  return {sym, name:sym, price, chg:ticker.chg, dir, entry, sl, tp, rr, conf, reasons, rsi:rsiV, atr:atrV, candles};
+  if(risk<=0)return null;
+  const rr=Math.abs(tp-entry)/risk;
+  if(!Number.isFinite(rr)||rr<2)return null;
+  if(volRatio<MIN_VOLUME)return null;
+  return {sym:symbol,name:symbol,price:price,chg:ticker.chg,dir:dir,
+    entry:entry,sl:sl,tp:tp,rr:rr,
+    score:Math.min(95,score),conf:Math.min(95,score),
+    reasons:reasons,rsi:rsiVal,atr:atrVal,volumeRatio:volRatio,candles:candles};
 }
 
-/* ================= SCAN ================= */
+/* ================= SCANNER ================= */
 async function scan(manual=false){
   $("scanBtn").disabled=true; $("scanBtn").textContent="⏳ Scanning...";
-  $("connDot").className = "dot on"; $("connTxt").textContent = "Scanning...";
-  const prevKeys = new Set(state.signals.map(s=>s.sym+s.dir));
+  $("connDot").className="dot on"; $("connTxt").textContent="Scanning...";
+  const prevSigs=new Set(state.signals.map(s=>s.sym+"_"+s.dir));
   state.signals=[];
-  const tf=$("tfSelect").value, q=$("quoteSelect").value;
+  const tf=$("tfSelect").value,q=$("quoteSelect").value;
   state.tf=tf; state.quote=q;
-  let ok=0, fail=0;
-  const jobs = COINS.map(async c=>{
-    const sym=c+q;
-    try{
-      const [candles,ticker]=await Promise.all([fetchKlines(sym,tf),fetchTicker(sym)]);
-      ok++;
-      const sig=analyze(candles,sym,ticker);
-      if(sig.dir && sig.rr>=2 && sig.conf>=50) state.signals.push(sig);
-    }catch(e){ fail++; }
+  let ok=0,fail=0;
+  const results=[];
+  for(let s=0;s<COINS.length;s+=5){
+    const batch=COINS.slice(s,s+5);
+    const batchRes=await Promise.all(batch.map(async coin=>{
+      const sym=coin+q;
+      try{
+        const [candles,tickerR]=await Promise.all([
+          fetchKlines(sym,tf),
+          fetch(`https://api.binance.com/api/v3/ticker/24hr?symbol=${sym}`)
+        ]);
+        if(!tickerR.ok)throw new Error("Ticker failed");
+        const td=await tickerR.json();
+        ok++;
+        return analyze(candles,sym,{chg:Number(td.priceChangePercent)});
+      }catch(e){fail++;console.warn(sym,e);return null;}
+    }));
+    results.push(...batchRes);
+  }
+  state.signals=results.filter(s=>s&&s.dir&&s.rr>=2&&s.score>=MIN_SCORE)
+    .sort((a,b)=>b.score-a.score);
+  state.scanTime=new Date(); state.scans++;
+  $("scanCount").textContent=state.scans;
+  if(ok>=15){
+    $("connDot").className="dot on"; $("connTxt").textContent=`Connected (${ok}/${COINS.length})`;
+  }else{
+    $("connDot").className="dot off"; $("connTxt").textContent=`⚠️ ${ok}/${COINS.length} pairs`;
+  }
+  const newSigs=state.signals.filter(s=>{
+    const key=s.sym+"_"+s.dir;
+    if(prevSigs.has(key))return false;
+    const last=recentAlerts[key];
+    if(last&&Date.now()-last<ALERT_COOLDOWN)return false;
+    recentAlerts[key]=Date.now();
+    return true;
   });
-  await Promise.all(jobs);
-  state.signals.sort((a,b)=>b.conf-a.conf);
-  state.scanTime=new Date();
-  state.scans++;
-  $("scanCount").textContent = state.scans;
-
-  // Connection status
-  if(ok>10){
-    $("connDot").className = "dot on"; $("connTxt").textContent = `Connected (${ok} pairs live)`;
-  } else {
-    $("connDot").className = "dot off"; $("connTxt").textContent = "⚠️ Connection issue";
+  if(newSigs.length&&state.scans>1){
+    const s=newSigs[0];
+    const msg=`${s.dir} ${s.sym} @ $${fmt(s.price)} → TP $${fmt(s.tp)} / SL $${fmt(s.sl)} (1:${s.rr.toFixed(1)}) Score ${s.score}`;
+    beep(); notify("⚡ New Crypto Signal",msg);
+    $("lastSignal").innerHTML=`<span style="color:var(--green)">🆕 <b>${s.sym} ${s.dir}</b> ${state.scanTime.toLocaleTimeString()}</span>`;
+    toast("🆕 "+msg);
+  }else if(manual){
+    toast(`✓ Scan complete — ${state.signals.length} valid setups (${ok} ok, ${fail} failed)`);
   }
-
-  // New signal detection
-  const newSigs = state.signals.filter(s=>!prevKeys.has(s.sym+s.dir));
-  if(newSigs.length > 0 && state.scans > 1){
-    const s = newSigs[0];
-    const msg = `${s.dir} ${s.sym} @ $${fmt(s.price)} → TP $${fmt(s.tp)} / SL $${fmt(s.sl)} (1:${s.rr.toFixed(1)})`;
-    beep();
-    notify("⚡ New 1:2 Signal", msg);
-    $("lastSignal").innerHTML = `<span style="color:var(--green)">🆕 New signal: <b>${s.sym} ${s.dir}</b> ${state.scanTime.toLocaleTimeString()}</span>`;
-    toast("🆕 " + msg);
-  } else if(manual){
-    toast(`✓ Scan complete — ${state.signals.length} valid 1:2 setups (${ok} ok, ${fail} skipped)`);
-  }
-
   $("scanBtn").disabled=false; $("scanBtn").textContent="🔍 Scan Now";
   render();
+  updateLivePrices();
 }
 
-/* ================= AUTO-SCAN ================= */
+/* ================= AUTO SCAN ================= */
 function scheduleNext(){
   clearTimeout(autoTimer); clearInterval(countdownTimer);
-  if(!state.auto) { $("nextScan").textContent = "paused"; return; }
-  const iv = Math.max(30, +$("scanInterval").value||60) * 1000;
-  nextScanAt = Date.now() + iv;
-  autoTimer = setTimeout(async ()=>{ await scan(); scheduleNext(); }, iv);
-  countdownTimer = setInterval(()=>{
-    const left = Math.max(0, Math.round((nextScanAt - Date.now())/1000));
-    $("nextScan").textContent = left + "s";
-    if(left<=0) clearInterval(countdownTimer);
-  }, 1000);
+  if(!state.auto){$("nextScan").textContent="paused";return;}
+  const sec=Math.max(30,Number($("scanInterval").value)||60);
+  nextScanAt=Date.now()+sec*1000;
+  autoTimer=setTimeout(async()=>{await scan();scheduleNext();},sec*1000);
+  countdownTimer=setInterval(()=>{
+    const left=Math.max(0,Math.round((nextScanAt-Date.now())/1000));
+    $("nextScan").textContent=left+"s";
+    if(left<=0)clearInterval(countdownTimer);
+  },1000);
 }
-$("autoBtn").onclick = ()=>{
-  state.auto = !state.auto;
-  $("autoBtn").textContent = state.auto ? "⏸ Auto: ON" : "▶ Auto: OFF";
-  $("autoBtn").className = state.auto ? "primary" : "";
-  if(state.auto){ scheduleNext(); toast("✓ Auto-scan resumed"); }
-  else { clearTimeout(autoTimer); clearInterval(countdownTimer); $("nextScan").textContent="paused"; toast("⏸ Auto-scan paused"); }
+$("autoBtn").onclick=()=>{
+  state.auto=!state.auto;
+  $("autoBtn").textContent=state.auto?"⏸ Auto: ON":"▶ Auto: OFF";
+  $("autoBtn").className=state.auto?"primary":"";
+  if(state.auto){scheduleNext();toast("✓ Auto-scan resumed");}
+  else{clearTimeout(autoTimer);clearInterval(countdownTimer);$("nextScan").textContent="paused";toast("⏸ Auto-scan paused");}
 };
-$("tfSelect").onchange = ()=>{ if(state.auto){scheduleNext();} scan(); };
-$("quoteSelect").onchange = ()=>{ if(state.auto){scheduleNext();} scan(); };
+$("tfSelect").onchange=()=>{if(state.auto)scheduleNext();scan(true);};
+$("quoteSelect").onchange=()=>{if(state.auto)scheduleNext();scan(true);};
+
+/* ================= FORMAT ================= */
+function fmt(n){
+  if(!Number.isFinite(n))return "—";
+  if(n>=100)return n.toFixed(1);
+  if(n>=1)return n.toFixed(3);
+  if(n<0.000001)return n.toExponential(2);
+  return n.toFixed(6);
+}
+function fmtINR(n){
+  if(!Number.isFinite(n))return "—";
+  const a=Math.abs(n);
+  if(a>=100000)return "₹"+(n/100000).toFixed(2)+"L";
+  if(a>=1000)return "₹"+(n/1000).toFixed(1)+"k";
+  return "₹"+n.toFixed(0);
+}
+
+/* ================= LIVE P&L ENGINE ================= */
+async function updateLivePrices(){
+  const syms=[...new Set(state.journal.filter(t=>!t.closed).map(t=>t.sym))];
+  if(!syms.length)return;
+  await Promise.all(syms.map(async sym=>{
+    const p=await fetchPrice(sym);
+    if(p)state.livePrices[sym]=p;
+  }));
+  renderJournal();
+}
+
+function calcLivePnL(t){
+  const cp=state.livePrices[t.sym]||t.entry;
+  const riskPct=Math.abs(t.entry-t.sl)/t.entry;
+  let move;
+  if(t.dir==="LONG")move=(cp-t.entry)/t.entry;
+  else move=(t.entry-cp)/t.entry;
+  const pnl=t.amt*t.lev*move;
+  const rMultiple=move/riskPct; // how many R's of profit/loss
+  return {pnl,cp,rMultiple};
+}
+
+function calcClosedPnL(t){
+  if(t.status==="tp"){
+    const riskPct=Math.abs(t.entry-t.sl)/t.entry;
+    return t.amt*t.lev*2*riskPct;
+  }
+  if(t.status==="sl"){
+    const riskPct=Math.abs(t.entry-t.sl)/t.entry;
+    return -t.amt*t.lev*riskPct;
+  }
+  if(t.status==="manual"&&t.closePrice){
+    let move;
+    if(t.dir==="LONG")move=(t.closePrice-t.entry)/t.entry;
+    else move=(t.entry-t.closePrice)/t.entry;
+    return t.amt*t.lev*move;
+  }
+  return t.pnl||0;
+}
 
 /* ================= RENDER ================= */
-function fmt(n){ return n>=100? n.toFixed(1) : n>=1? n.toFixed(3) : n.toFixed(6); }
-function render(){ renderStats(); renderSignals(); renderJournal(); }
+function render(){renderStats();renderSignals();renderJournal();}
+
 function renderStats(){
-  const wins=state.journal.filter(t=>t.pnl>0).length;
-  const total=state.journal.length;
-  const pnl=state.journal.reduce((s,t)=>s+t.pnl,0);
+  const closed=state.journal.filter(t=>t.closed);
+  const wins=closed.filter(t=>calcClosedPnL(t)>0).length;
+  const total=closed.length;
+  const pnl=state.journal.reduce((s,t)=>s+(t.closed?calcClosedPnL(t):calcLivePnL(t).pnl),0);
+  const wr=total?Math.round(wins/total*100):0;
+  const heat=state.signals.length;
+  const heatClass=heat>MAX_HEAT?"heat-warn":"heat-ok";
+  $("heatStat").innerHTML=`🌡 Heat: <b class="${heatClass}">${heat}/${MAX_HEAT}</b>`;
   $("statsBar").innerHTML=`
     <div class="stat"><div class="v" style="color:var(--blue)">${state.signals.length}</div><div class="l">Active Signals</div></div>
-    <div class="stat"><div class="v" style="color:var(--yellow)">${total}</div><div class="l">Trades Logged</div></div>
-    <div class="stat"><div class="v" style="color:${wins/total>=0.5?'var(--green)':'var(--red)'}">${total?Math.round(wins/total*100):0}%</div><div class="l">Win Rate</div></div>
-    <div class="stat"><div class="v" style="color:${pnl>=0?'var(--green)':'var(--red)'}">₹${pnl.toFixed(0)}</div><div class="l">Total P&L</div></div>
+    <div class="stat"><div class="v" style="color:var(--yellow)">${state.journal.length}</div><div class="l">Total Trades</div></div>
+    <div class="stat"><div class="v" style="color:var(--green)">${state.journal.filter(t=>!t.closed).length}</div><div class="l">Open</div></div>
+    <div class="stat"><div class="v" style="color:${wr>=50?'var(--green)':'var(--red)'}">${wr}%</div><div class="l">Win Rate</div></div>
+    <div class="stat"><div class="v" style="color:${pnl>=0?'var(--green)':'var(--red)'}">${fmtINR(pnl)}</div><div class="l">Total P&L</div></div>
     <div class="stat"><div class="v" style="font-size:14px;color:var(--muted)">${state.scanTime?state.scanTime.toLocaleTimeString():"—"}</div><div class="l">Last Scan</div></div>`;
 }
+
 function renderSignals(){
   const g=$("signalsGrid");
-  if(!state.signals.length){ g.innerHTML=`<div class="empty" style="grid-column:1/-1">No 1:2 setups right now — auto-scanner is watching.<br><br>You'll get a <b>🔔 notification + beep</b> the moment one appears.<br>Last scan: ${state.scanTime?state.scanTime.toLocaleTimeString():"never"}</div>`; return; }
-  g.innerHTML = state.signals.map((s,idx)=>`
+  if(!state.signals.length){
+    g.innerHTML=`<div class="empty" style="grid-column:1/-1">
+      No validated setups right now.<br><br>
+      Watching ${COINS.length} ${state.quote} pairs using CLOSED candles.<br>
+      Last scan: ${state.scanTime?state.scanTime.toLocaleTimeString():"never"}
+    </div>`;
+    return;
+  }
+  g.innerHTML=state.signals.map((s,idx)=>`
     <div class="card">
       <div class="top">
-        <div class="coin"><div><div class="sym">${s.sym}</div><div class="name">${s.name} · ${state.tf}</div></div></div>
-        <div><div class="price">$${fmt(s.price)}</div><div class="chg ${s.chg>=0?'up':'down'}">${s.chg>=0?'▲':'▼'} ${Math.abs(s.chg).toFixed(2)}%</div></div>
+        <div><div class="sym">${s.sym}</div><div class="name">Test mode · ${state.tf}</div></div>
+        <div><div class="price">$${fmt(s.price)}</div>
+        <div class="chg">${s.chg>=0?"▲":"▼"} ${Math.abs(s.chg).toFixed(2)}%</div></div>
       </div>
-      <span class="badge ${s.dir==='LONG'?'long':'short'}">${s.dir==='LONG'?'📈 LONG':'📉 SHORT'}</span>
-      <span class="badge wait" style="margin-left:6px">Conf ${s.conf}%</span>
+      <span class="badge ${s.dir==="LONG"?"long":"short"}">${s.dir==="LONG"?"📈 LONG":"📉 SHORT"}</span>
+      <span class="badge wait" style="margin-left:6px">Score ${s.score}/100</span>
       <div class="levels">
-        <div class="lvl entry"><div class="k">Entry</div><div class="val">$${fmt(s.entry)}</div></div>
+        <div class="lvl entry"><div class="k">Entry (approx)</div><div class="val">$${fmt(s.entry)}</div></div>
         <div class="lvl sl"><div class="k">Stop Loss</div><div class="val">$${fmt(s.sl)}</div></div>
-        <div class="lvl tp"><div class="k">Take Profit (2R)</div><div class="val">$${fmt(s.tp)}</div></div>
-        <div class="lvl rr"><div class="k">Risk:Reward</div><div class="val">1 : ${s.rr.toFixed(1)}</div></div>
+        <div class="lvl tp"><div class="k">Take Profit 2R</div><div class="val">$${fmt(s.tp)}</div></div>
+        <div class="lvl rr"><div class="k">Risk : Reward</div><div class="val">1 : ${s.rr.toFixed(1)}</div></div>
       </div>
-      <div class="riskbar"><i style="width:${s.conf}%;background:${s.conf>=70?'var(--green)':s.conf>=55?'var(--yellow)':'var(--red)'}"></i></div>
-      <div class="reason">🧠 ${s.reasons.join(" · ")}</div>
-      <div class="ai-box" id="ai-${idx}"></div>
+      <div class="riskbar"><i style="width:${s.score}%;background:${s.score>=75?"var(--green)":s.score>=60?"var(--yellow)":"var(--red)"}"></i></div>
+      <div class="reason">
+        🧠 ${s.reasons.join(" · ")}<br>
+        📊 Volume: ${s.volumeRatio.toFixed(2)}x · RSI: ${s.rsi.toFixed(1)}<br>
+        🧪 TEST ONLY — no order is sent.
+      </div>
       <div class="actions">
-        <button class="primary" onclick="openTrade(${idx})">📝 Log on CoinSwitch</button>
-        <button onclick="askAI(${idx})">🤖 AI</button>
+        <button class="primary" onclick="openTrade(${idx})">📝 Paper Trade</button>
+        <button onclick="askAI(${idx})">🤖 AI Review</button>
       </div>
+      <div class="ai-box" id="ai-${idx}"></div>
     </div>`).join("");
 }
+
+/* ================= JOURNAL (INTERACTIVE) ================= */
 function renderJournal(){
   const l=$("journalList");
-  if(!state.journal.length){ l.innerHTML=`<div class="empty">No trades yet. Log a signal to start tracking your edge.</div>`; return; }
-  l.innerHTML = state.journal.slice().reverse().map((t,i)=>{
-    const realIdx = state.journal.length-1-i;
-    return `<div class="jrow">
-      <span class="jsym">${t.sym}</span>
-      <span class="badge ${t.dir==='LONG'?'long':'short'}">${t.dir}</span>
-      <span class="jdetail">Entry $${fmt(t.entry)} → TP $${fmt(t.tp)} / SL $${fmt(t.sl)} · ₹${t.amt} @ ${t.lev}x · ${t.date}</span>
-      <span class="jpnl ${t.pnl>=0?'up':'down'}">${t.pnl>=0?'+':''}₹${t.pnl.toFixed(0)}</span>
-      <button onclick="closeTrade(${realIdx})" style="font-size:11px;padding:5px 10px">${t.closed?'Closed':'Mark TP/SL'}</button>
-    </div>`;}).join("");
+  if(!state.journal.length){
+    l.innerHTML=`<div class="empty">No paper trades yet.<br>Click "📝 Paper Trade" on any signal to start.</div>`;
+    return;
+  }
+  l.innerHTML=state.journal.slice().reverse().map((t,idx)=>{
+    const ri=state.journal.length-1-idx;
+    let pnlHtml,statusBadge,progressHtml="";
+
+    if(t.closed){
+      const pnl=calcClosedPnL(t);
+      const statusTxt=t.status==="tp"?"TP HIT":t.status==="sl"?"SL HIT":"MANUAL";
+      const statusClass=t.status==="tp"?"tp-hit":t.status==="sl"?"sl-hit":"running";
+      statusBadge=`<span class="badge ${t.status==="tp"?"long":t.status==="sl"?"short":"wait"}">${statusTxt}</span>`;
+      pnlHtml=`<div class="live-pnl ${pnl>=0?"up":"down"}">${pnl>=0?"+":""}${fmtINR(pnl)}</div>`;
+    }else{
+      const live=calcLivePnL(t);
+      const rTxt=live.rMultiple>=0?`+${live.rMultiple.toFixed(1)}R`:`${live.rMultiple.toFixed(1)}R`;
+      statusBadge=`<span class="badge wait">RUNNING</span>`;
+      pnlHtml=`<div>
+        <div class="live-pnl ${live.pnl>=0?"up":"down"}">${live.pnl>=0?"+":""}${fmtINR(live.pnl)}</div>
+        <div class="pnl-label">${rTxt} · Live @ $${fmt(live.cp)}</div>
+      </div>`;
+      // Progress bar toward TP/SL
+      const range=Math.abs(t.tp-t.sl);
+      const dist=Math.abs(live.cp-t.sl);
+      const pct=Math.min(100,Math.max(0,(dist/range)*100));
+      const barColor=live.pnl>=0?"var(--green)":"var(--red)";
+      progressHtml=`<div class="progress"><i style="width:${pct}%;background:${barColor}"></i></div>`;
+    }
+
+    return `<div class="jrow" style="${t.closed?"opacity:.75":""}">
+      <span class="sym">${t.sym}</span>
+      <span class="badge ${t.dir==="LONG"?"long":"short"}">${t.dir}</span>
+      ${statusBadge}
+      <span class="jdetail">
+        Entry $${fmt(t.entry)} → TP $${fmt(t.tp)} / SL $${fmt(t.sl)}<br>
+        ${fmtINR(t.amt)} @ ${t.lev}x · ${t.date}
+        ${t.notes?`<br>📝 ${t.notes}`:""}
+      </span>
+      ${pnlHtml}
+      <div class="jbtns">
+        ${!t.closed?`<button class="small primary" onclick="quickClose(${ri},'tp')">🎯 TP</button>
+        <button class="small danger" onclick="quickClose(${ri},'sl')">🛑 SL</button>`:""}
+        <button class="small" onclick="openEdit(${ri})">✏️ Edit</button>
+        <button class="small danger" onclick="deleteTrade(${ri})">🗑️</button>
+      </div>
+      ${progressHtml}
+    </div>`;
+  }).join("");
 }
 
-/* ================= AI (Moonshot) ================= */
-async function askAI(idx){
-  const s=state.signals[idx]; if(!s) return;
-  const box=$("ai-"+idx); box.classList.add("show"); box.innerHTML="<b>🤖 Analyzing...</b>";
-  const key=$("moonKey").value.trim();
-  if(!key){ box.innerHTML="<b>⚠️ Add your free Moonshot API key in Settings tab first.</b>"; return; }
-  const recent=s.candles.slice(-20).map(c=>`${c.o.toFixed(4)}/${c.h.toFixed(4)}/${c.l.toFixed(4)}/${c.c.toFixed(4)}`).join(", ");
-  const prompt=`You are a crypto trading analyst. Coin: ${s.sym}, TF: ${state.tf}, Price: ${s.price}, Signal: ${s.dir}, Entry: ${s.entry}, SL: ${s.sl}, TP: ${s.tp}, RR: 1:${s.rr.toFixed(1)}, RSI: ${s.rsi.toFixed(1)}. Recent OHLC: ${recent}. Give a short verdict (PROCEED / SKIP / WAIT) with 2-3 sentence reasoning and one risk warning. Be concise.`;
-  try{
-    const r=await fetch("https://api.moonshot.ai/v1/chat/completions",{
-      method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
-      body:JSON.stringify({model:"moonshot-v1-8k",messages:[{role:"user",content:prompt}],temperature:0.3,max_tokens:300})
-    });
-    const d=await r.json();
-    const txt=d.choices?.[0]?.message?.content||"No response";
-    box.innerHTML=`<b>🤖 AI Verdict:</b> ${txt.replace(/\n/g,"<br>")}`;
-  }catch(e){ box.innerHTML="<b>⚠️ AI call failed.</b> Check key / network."; }
-}
-
-/* ================= TRADE JOURNAL ================= */
-let curIdx=null;
+/* ================= TRADE CRUD ================= */
 function openTrade(idx){
   curIdx=idx; const s=state.signals[idx];
-  $("tmTitle").textContent=`Log ${s.sym} ${s.dir}`;
+  $("tmTitle").textContent=`Paper Trade — ${s.sym} ${s.dir}`;
   $("tmDir").value=s.dir; $("tmEntry").value=fmt(s.entry);
   $("tmSL").value=fmt(s.sl); $("tmTP").value=fmt(s.tp);
   $("tradeModal").classList.add("show");
 }
-function closeModal(){ $("tradeModal").classList.remove("show"); }
+function closeModal(){$("tradeModal").classList.remove("show");}
 function saveTrade(){
-  const s=state.signals[curIdx];
-  const amt=+$("tmAmt").value||0, lev=+$("tmLev").value;
-  state.journal.push({sym:s.sym,dir:s.dir,entry:s.entry,sl:s.sl,tp:s.tp,amt,lev,pnl:0,closed:false,date:new Date().toLocaleDateString()});
-  save(); closeModal(); render(); toast("✓ Trade logged — execute on CoinSwitch now");
-}
-function closeTrade(i){
-  const t=state.journal[i]; if(!t||t.closed) return;
-  const hit=prompt(`Result for ${t.sym} ${t.dir}?\nType "tp" (hit take profit) or "sl" (hit stop loss):`,"tp");
-  if(!hit) return;
-  const riskPct = Math.abs(t.entry - (t.dir==="LONG"?t.sl:t.tp))/t.entry;
-  const move = hit.toLowerCase()==="tp" ? 2*riskPct : -riskPct;
-  t.pnl = t.amt * t.lev * move;
-  t.closed=true; save(); render();
-  toast(hit.toLowerCase()==="tp" ? `🎯 TP hit! +₹${t.pnl.toFixed(0)}` : `🛑 SL hit. −₹${Math.abs(t.pnl).toFixed(0)}`);
+  const s=state.signals[curIdx]; if(!s)return;
+  const amt=Number($("tmAmt").value)||0, lev=Number($("tmLev").value);
+  const notes=prompt("Notes (optional):","");
+  state.journal.push({
+    sym:s.sym,dir:s.dir,entry:s.entry,sl:s.sl,tp:s.tp,
+    amt:amt,lev:lev,pnl:0,closed:false,status:"running",
+    date:new Date().toLocaleString(),notes:notes||""
+  });
+  save(); closeModal(); render(); updateLivePrices();
+  toast("✓ Paper trade saved — live P&L tracking started");
 }
 
-/* ================= UI ================= */
-document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  t.classList.add("active");
-  const tab=t.dataset.tab;
-  $("signalsGrid").style.display = tab==="signals"?"grid":"none";
-  $("journalList").style.display = tab==="journal"?"flex":"none";
-  $("settingsPane").style.display = tab==="settings"?"block":"none";
+function quickClose(idx,result){
+  const t=state.journal[idx]; if(!t||t.closed)return;
+  t.closed=true; t.status=result;
+  t.pnl=calcClosedPnL(t);
+  save(); render();
+  toast(result==="tp"?`🎯 TP hit! +${fmtINR(t.pnl)}`:`🛑 SL hit. ${fmtINR(t.pnl)}`);
+}
+
+function openEdit(idx){
+  editIdx=idx; const t=state.journal[idx];
+  $("emTitle").textContent=`Edit Trade — ${t.sym}`;
+  $("emSym").value=t.sym;
+  $("emDir").value=t.dir;
+  $("emEntry").value=t.entry;
+  $("emPrice").value=state.livePrices[t.sym]||t.entry;
+  $("emSL").value=t.sl;
+  $("emTP").value=t.tp;
+  $("emAmt").value=t.amt;
+  $("emLev").value=t.lev;
+  $("emStatus").value=t.status||"running";
+  $("emClose").value=t.closePrice||"";
+  $("editModal").classList.add("show");
+}
+function closeEdit(){$("editModal").classList.remove("show");}
+function saveEdit(){
+  const t=state.journal[editIdx]; if(!t)return;
+  t.sym=$("emSym").value.toUpperCase();
+  t.dir=$("emDir").value;
+  t.entry=Number($("emEntry").value)||t.entry;
+  t.sl=Number($("emSL").value)||t.sl;
+  t.tp=Number($("emTP").value)||t.tp;
+  t.amt=Number($("emAmt").value)||t.amt;
+  t.lev=Number($("emLev").value)||t.lev;
+  const st=$("emStatus").value;
+  t.status=st;
+  if(st==="tp"||st==="sl"||st==="manual"){
+    t.closed=true;
+    t.closePrice=Number($("emClose").value)||null;
+    t.pnl=calcClosedPnL(t);
+  }else{
+    t.closed=false; t.pnl=0; t.closePrice=null;
+  }
+  save(); closeEdit(); render(); updateLivePrices();
+  toast("✓ Trade updated");
+}
+
+function deleteTrade(idx){
+  const t=state.journal[idx];
+  if(!confirm(`Delete ${t.sym} ${t.dir} trade?`))return;
+  state.journal.splice(idx,1);
+  save(); render();
+  toast("🗑️ Trade deleted");
+}
+
+/* ================= AI REVIEW ================= */
+async function askAI(idx){
+  const s=state.signals[idx],box=$("ai-"+idx);
+  if(!s||!box)return;
+  box.style.display="block"; box.innerHTML="<b>🤖 Reviewing...</b>";
+  const key=$("moonKey").value.trim();
+  if(!key){box.innerHTML="<b>⚠️ Add Moonshot key in Settings.</b>";return;}
+  const recent=s.candles.slice(-15).map(c=>`${c.o}/${c.h}/${c.l}/${c.c}/${c.v}`).join(", ");
+  const prompt=`Review this crypto paper-trade setup. Do NOT place trades. Do NOT change Entry, Stop Loss or Take Profit. Return: 1. PROCEED, WAIT or SKIP 2. Two reasons 3. One risk warning. Symbol: ${s.sym} Timeframe: ${state.tf} Direction: ${s.dir} Entry: ${s.entry} Stop Loss: ${s.sl} Take Profit: ${s.tp} RR: 1:${s.rr.toFixed(1)} RSI: ${s.rsi.toFixed(1)} Volume: ${s.volumeRatio.toFixed(2)}x Recent OHLCV: ${recent}`;
+  try{
+    const r=await fetch("https://api.moonshot.ai/v1/chat/completions",{
+      method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},
+      body:JSON.stringify({model:"moonshot-v1-8k",messages:[{role:"user",content:prompt}],temperature:.2,max_tokens:220})
+    });
+    const d=await r.json();
+    const txt=d?.choices?.[0]?.message?.content||"No response";
+    box.innerHTML="<b>🤖 AI:</b><br>"+txt.replace(/\n/g,"<br>");
+  }catch(e){console.error(e);box.innerHTML="<b>⚠️ AI request failed.</b>";}
+}
+
+/* ================= TABS ================= */
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    tab.classList.add("active");
+    const sel=tab.dataset.tab;
+    $("signalsGrid").style.display=sel==="signals"?"grid":"none";
+    $("journalList").style.display=sel==="journal"?"flex":"none";
+    $("settingsPane").style.display=sel==="settings"?"block":"none";
+    if(sel==="journal")updateLivePrices();
+  };
 });
+
+/* ================= UI EVENTS ================= */
 $("scanBtn").onclick=()=>scan(true);
-$("jrnlBtn").onclick=()=>document.querySelector('[data-tab="journal"]').click();
-function toast(msg){ const t=$("toast"); t.textContent=msg; t.style.display="block"; setTimeout(()=>t.style.display="none",3500); }
+$("jrnlBtn").onclick=()=>{document.querySelector('[data-tab="journal"]').click();};
+function toast(msg){
+  const el=$("toast"); el.textContent=msg; el.style.display="block";
+  setTimeout(()=>{el.style.display="none";},3500);
+}
 
 /* ================= INIT ================= */
-load(); render(); scan(); scheduleNext();
+load(); render();
+(async()=>{await scan(true);scheduleNext();})();
+// Live P&L refresh every 15s
+liveTimer=setInterval(updateLivePrices,LIVE_UPDATE_MS);
 </script>
 </body>
 </html>
